@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ServiceModel;
 using System.IO;
 using Common;
 
@@ -12,8 +13,41 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            string path = Menu();
-            Console.WriteLine(path);
+            ChannelFactory<IServiceContract> factory = new ChannelFactory<IServiceContract>("ChargerService");
+            IServiceContract proxy = factory.CreateChannel();
+
+            string pathBefore = Menu();
+            string[] part = pathBefore.Split('*');
+            string path = part[0];
+            int broj = int.Parse(part[1]);
+            
+            TextManipulation man = new TextManipulation(path);
+            man.Initialize();
+
+            proxy.StartSession();
+
+            int brojRedova = man.GetNumberOfLines();
+            string s = "";
+            for (int i = 0; i < brojRedova; i++)
+            {
+                if(i == 0)
+                { 
+                    man.ReadLine(); 
+                }
+                else
+                {
+                    s = man.ReadLine();
+                    DataContract data = man.ConvertToData(s, i, broj);
+                    if(data != null)
+                    {
+                        man.Validate(data);
+                        proxy.PushSample(data);
+                    }
+                }
+            }
+            man.Dispose();
+
+            proxy.EndSession();
         }
 
         public static string Menu()
@@ -21,7 +55,7 @@ namespace Client
             FolderManipulation folders = new FolderManipulation();
             Console.WriteLine("Dobar dan, molimo vas odaberite jedno od sledecih vozila (1 - 12):  \n");
             int broj = 0;
-            while(true)
+            while (true)
             {
                 folders.PrintAvailableDirectories();
                 Console.WriteLine("Unesite broj vozila (1-12): ");
@@ -40,6 +74,7 @@ namespace Client
                 }
             }
             string odabranFolder = folders.ChooseDirectory(broj);
+            odabranFolder += "*" + broj;
             return odabranFolder;
         }
     }
