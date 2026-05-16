@@ -95,17 +95,17 @@ namespace Common
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Nevalidan podatak! VehicleId: " + id + " RowIndex: " + row);
                 return null;
             }
         }
 
-        public void Validate(DataContract data)
+        public bool Validate(DataContract data)
         {
             if (data.Voltage_RMS_Min <= 0 || data.Voltage_RMS_Avg <= 0 || data.Voltage_RMS_Max <= 0 || data.Current_RMS_Min <= 0 || data.Current_RMS_Avg <= 0 || data.Current_RMS_Max <= 0 || data.Real_Power_Min <= 0 || data.Real_Power_Avg <= 0 || data.Real_Power_Max <= 0 || data.Apparent_Power_Min <= 0 || data.Apparent_Power_Avg <= 0 || data.Apparent_Power_Max <= 0 || data.Frequency_Min <= 0 || data.Frequency_Avg <= 0 || data.Frequency_Max <= 0)
             {
-                Console.WriteLine("Nevalidan podatak! VehicleId: " + data.VehicleId + " RowIndex: " + data.RowIndex);
+                return false;
             }
+            return true;
         }
 
         public int GetNumberOfLines()

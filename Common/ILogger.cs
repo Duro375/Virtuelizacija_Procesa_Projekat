@@ -8,6 +8,6 @@ namespace Common
 {
     public interface ILogger
     {
-        public string Log();
+        void Log(string message, LogType type);
     }
 }
