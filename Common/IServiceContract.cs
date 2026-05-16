@@ -11,8 +11,13 @@ namespace Common
     public interface IServiceContract
     {
         [OperationContract]
-        void StartSession();
-        void PushSample(DataContract data);
-        void EndSession();
+        string StartSession();
+
+        [OperationContract]
+        [FaultContract(typeof(CustomException))]
+        string PushSample(DataContract data);
+
+        [OperationContract]
+        string EndSession();
     }
 }

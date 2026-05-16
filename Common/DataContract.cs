@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace Common
 {
     [DataContract]
-    public class DataContract : IDisposable
+    public class DataContract
     {
         [DataMember]
         public int VehicleId { get; set; }
@@ -77,11 +77,6 @@ namespace Common
             Frequency_Min = frequency_Min;
             Frequency_Avg = frequency_Avg;
             Frequency_Max = frequency_Max;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }
