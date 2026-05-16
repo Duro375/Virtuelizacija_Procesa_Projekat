@@ -11,8 +11,9 @@ namespace Server
 {
     public class ServiceContract : IServiceContract
     {
-        public void StartSession()
+        public void StartSession(int vehicleId)
         {
+
         }
 
         public void PushSample(DataContract data)
@@ -22,6 +23,7 @@ namespace Server
             {
                 SendFaultMessage(error);
             }
+
         }
         public void EndSession()
         {

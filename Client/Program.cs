@@ -13,8 +13,8 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            /*ChannelFactory<IServiceContract> factory = new ChannelFactory<IServiceContract>("ChargerService");
-            IServiceContract proxy = factory.CreateChannel();*/
+            ChannelFactory<IServiceContract> factory = new ChannelFactory<IServiceContract>("ChargerService");
+            IServiceContract proxy = factory.CreateChannel();
 
             ILogger logger = new Logger("log.txt");
 
@@ -26,7 +26,7 @@ namespace Client
             TextManipulation manipulator = new TextManipulation(path);
             manipulator.Initialize();
 
-            //proxy.StartSession();
+            proxy.StartSession(number);
 
             int brojRedova = manipulator.GetNumberOfLines();
             string dataString = "";
@@ -44,7 +44,7 @@ namespace Client
                     {
                         if(!manipulator.Validate(data))
                             logger.Log("Podaci nemaju ispravne vrednosti za vozilo " + number + " u redu " + i, LogType.WARNING);
-                        //proxy.PushSample(data);
+                        proxy.PushSample(data);
                     }
                     else
                     {
@@ -54,7 +54,7 @@ namespace Client
             }
             manipulator.Dispose();
 
-            //proxy.EndSession();
+            proxy.EndSession();
         }
 
         public static string Menu()

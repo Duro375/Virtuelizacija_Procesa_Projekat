@@ -11,7 +11,7 @@ namespace Common
     public interface IServiceContract
     {
         [OperationContract]
-        void StartSession();
+        void StartSession(int vehicleId);
 
         [OperationContract]
         [FaultContract(typeof(CustomException))]

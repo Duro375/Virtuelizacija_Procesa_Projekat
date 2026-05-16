@@ -12,7 +12,6 @@ namespace Server
     {
         private FileStream _rejectionStream;
         private StreamWriter _rejectionWriter;
-        private string _rejectionFilePath;
 
 
         public RejectedWriter(string filePath)
