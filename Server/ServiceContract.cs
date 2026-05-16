@@ -24,7 +24,7 @@ namespace Server
         {
             throw new NotImplementedException();
         }
-
+        //3. zadatak: Validacija
         private bool Validate(DataContract data)
         {
             if(data.TimeStamp <= DateTime.MinValue)
