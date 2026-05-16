@@ -12,8 +12,14 @@ namespace Server
     {
         private FileStream _rejectionStream;
         private StreamWriter _rejectionWriter;
+        private string _rejectionFilePath;
 
 
+        public RejectedWriter(string filePath)
+        {
+            _rejectionStream = new FileStream(filePath, FileMode.Append, FileAccess.Write);
+            _rejectionWriter = new StreamWriter(_rejectionStream);
+        }
         public void WriteRejection(DataContract data)
         {
 

@@ -11,9 +11,8 @@ namespace Server
 {
     public class ServiceContract : IServiceContract
     {
-        public void EndSession()
+        public void StartSession()
         {
-            throw new NotImplementedException();
         }
 
         public void PushSample(DataContract data)
@@ -24,11 +23,10 @@ namespace Server
                 SendFaultMessage(error);
             }
         }
-
-        public void StartSession()
+        public void EndSession()
         {
-            throw new NotImplementedException();
         }
+
         //3. zadatak: Validacija i fault message
         private string Validate(DataContract data)
         {
