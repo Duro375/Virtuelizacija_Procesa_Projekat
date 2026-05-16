@@ -13,41 +13,48 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            ChannelFactory<IServiceContract> factory = new ChannelFactory<IServiceContract>("ChargerService");
-            IServiceContract proxy = factory.CreateChannel();
+            /*ChannelFactory<IServiceContract> factory = new ChannelFactory<IServiceContract>("ChargerService");
+            IServiceContract proxy = factory.CreateChannel();*/
+
+            ILogger logger = new Logger("log.txt");
 
             string pathBefore = Menu();
             string[] part = pathBefore.Split('*');
             string path = part[0];
-            int broj = int.Parse(part[1]);
+            int number = int.Parse(part[1]);
             
-            TextManipulation man = new TextManipulation(path);
-            man.Initialize();
+            TextManipulation manipulator = new TextManipulation(path);
+            manipulator.Initialize();
 
-            proxy.StartSession();
+            //proxy.StartSession();
 
-            int brojRedova = man.GetNumberOfLines();
-            string s = "";
+            int brojRedova = manipulator.GetNumberOfLines();
+            string dataString = "";
             for (int i = 0; i < brojRedova; i++)
             {
                 if(i == 0)
                 { 
-                    man.ReadLine(); 
+                    manipulator.ReadLine(); 
                 }
                 else
                 {
-                    s = man.ReadLine();
-                    DataContract data = man.ConvertToData(s, i, broj);
+                    dataString = manipulator.ReadLine();
+                    DataContract data = manipulator.ConvertToData(dataString, i, number);
                     if(data != null)
                     {
-                        man.Validate(data);
-                        proxy.PushSample(data);
+                        if(!manipulator.Validate(data))
+                            logger.Log("Podaci nemaju ispravne vrednosti za vozilo " + number + " u redu " + i, LogType.WARNING);
+                        //proxy.PushSample(data);
+                    }
+                    else
+                    {
+                        logger.Log("Podaci su u neispravnom formatu za vozilo " + number + " u redu " + i, LogType.ERROR);
                     }
                 }
             }
-            man.Dispose();
+            manipulator.Dispose();
 
-            proxy.EndSession();
+            //proxy.EndSession();
         }
 
         public static string Menu()
