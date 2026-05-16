@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContract.cs" />
+    <Compile Include="FolderManipulation.cs" />
     <Compile Include="IServiceContract.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
