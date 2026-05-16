@@ -29,6 +29,8 @@ namespace Common
             {
                 writer.WriteLine(logMessage);
             }
+            stream.Close();
+            writer.Close();
         }
 
         ~Logger()
