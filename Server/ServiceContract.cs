@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
@@ -10,38 +11,48 @@ namespace Server
 {
     public class ServiceContract : IServiceContract
     {
-        public string EndSession()
+        public void EndSession()
         {
             throw new NotImplementedException();
         }
 
-        public string PushSample(DataContract data)
+        public void PushSample(DataContract data)
         {
-            throw new NotImplementedException();
+            string error = Validate(data);
+            if (error != null)
+            {
+                SendFaultMessage(error);
+            }
         }
 
-        public string StartSession()
+        public void StartSession()
         {
             throw new NotImplementedException();
         }
-        //3. zadatak: Validacija
-        private bool Validate(DataContract data)
+        //3. zadatak: Validacija i fault message
+        private string Validate(DataContract data)
         {
             if(data.TimeStamp <= DateTime.MinValue)
-                return false;
+                return "Invalid Timestapm";
             if(data.Voltage_RMS_Avg < 0)
-                return false;
-            if(data.Current_RMS_Avg < 0)
-                return false;
+                return string.Format("Invalid Voltage_RMS_Avg: {0}", data.Voltage_RMS_Avg);
+            if (data.Current_RMS_Avg < 0)
+                return string.Format("Invalid Current_RMS_Avg: {0}", data.Current_RMS_Avg); 
             if(data.Real_Power_Avg < 0)
-                return false;
-            if(data.Reactive_Power_Avg < 0)
-                return false;
-            if(data.Apparent_Power_Avg < 0)
-                return false;
-            if(data.Frequency_Avg < 0)
-                return false;
-            return true;
+                return string.Format("Invalid Real_Power_Avg: {0}", data.Real_Power_Avg); 
+            if (data.Reactive_Power_Avg < 0)
+                return string.Format("Invalid Reactive_Power_Avg: {0}", data.Reactive_Power_Avg);
+            if (data.Apparent_Power_Avg < 0)
+                return string.Format("Invalid Apparent_Power_Avg: {0}", data.Apparent_Power_Avg);
+            if (data.Frequency_Avg < 0)
+                return string.Format("Invalid Frequency_Avg: {0}", data.Frequency_Avg);
+            return null;
+        }
+
+        private void SendFaultMessage(string message)
+        {
+            throw new FaultException<CustomException>(
+                new CustomException(message));
         }
     }
 }
