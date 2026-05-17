@@ -8,7 +8,7 @@ using System.ServiceModel;
 namespace Common
 {
     [ServiceContract]
-    public interface IServiceContract
+    public interface IChargingService
     {
         [OperationContract]
         void StartSession(int vehicleId);

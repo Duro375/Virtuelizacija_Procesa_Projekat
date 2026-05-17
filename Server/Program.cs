@@ -86,7 +86,7 @@ namespace Server
                     Console.WriteLine("red 2 upisan");
 
                     // SIMULACIJA PREKIDA NAKON PISANJA
-                    Console.WriteLine("\n🔴 SIMULACIJA PREKIDA...");
+                    Console.WriteLine("\nSIMULACIJA PREKIDA...");
                     throw new System.ServiceModel.CommunicationException(
                         "Konekcija sa klijentom je iznenada prekinuta!");
                 }
@@ -135,7 +135,7 @@ namespace Server
 
         static void RunWCFService()
         {
-            using (ServiceHost host = new ServiceHost(typeof(ServiceContract)))
+            using (ServiceHost host = new ServiceHost(typeof(ChargingService)))
             {
                 host.Open();
                 Console.WriteLine("Service is open, press any key to close it");

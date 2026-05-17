@@ -9,7 +9,7 @@ using Common;
 
 namespace Server
 {
-    public class ServiceContract : IServiceContract
+    public class ChargingService : IChargingService
     {
         public void StartSession(int vehicleId)
         {
@@ -22,6 +22,10 @@ namespace Server
             if (error != null)
             {
                 SendFaultMessage(error);
+            }
+            else
+            {
+                Console.WriteLine(data.RowIndex);
             }
 
         }
