@@ -51,7 +51,7 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Unsuccesful disposing of session writer!");
+                    Console.WriteLine("Dispose session writer-a je neuspesan!");
                 }
             }
             if( _sessionStream != null )
@@ -65,7 +65,7 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Unsuccesful disposing of session stream!");
+                    Console.WriteLine("Dispose session stream-a je neuspesan!");
                 }
             }
         }

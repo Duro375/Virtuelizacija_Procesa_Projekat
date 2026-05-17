@@ -37,7 +37,7 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Unsuccesful disposing of rejection writer!");
+                    Console.WriteLine("Dispose rejection writer-a je neuspesan!");
                 }
             }
             if (_rejectionStream != null)
@@ -51,7 +51,7 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Unsuccesful disposing of rejection stream!");
+                    Console.WriteLine("Dispose rejection stream-a je neuspesan!");
                 }
             }
         }
