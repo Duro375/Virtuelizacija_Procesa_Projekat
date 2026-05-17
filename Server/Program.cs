@@ -138,11 +138,11 @@ namespace Server
             using (ServiceHost host = new ServiceHost(typeof(ServiceContract)))
             {
                 host.Open();
-                Console.WriteLine("✓ Service is open, press any key to close it");
+                Console.WriteLine("Service is open, press any key to close it");
                 Console.ReadKey();
                 host.Close();
             }
-            Console.WriteLine("✓ Service is closed");
+            Console.WriteLine("Service is closed");
         }
     }
 }
