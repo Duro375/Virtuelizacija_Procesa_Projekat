@@ -55,6 +55,25 @@ namespace Client
             manipulator.Dispose();
 
             proxy.EndSession();
+
+            if (proxy != null)
+            {
+                try
+                {
+                    ((IClientChannel)proxy).Close();
+                }
+                catch
+                {
+
+                }
+            }
+
+
+            factory?.Close();
+
+            Console.WriteLine("Prenos podataka se zavrsio");
+
+            Console.ReadKey();
         }
 
         public static string Menu()
