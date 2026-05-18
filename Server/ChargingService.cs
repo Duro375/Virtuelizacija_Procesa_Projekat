@@ -101,18 +101,48 @@ namespace Server
         {
             if(data.TimeStamp <= DateTime.MinValue)
                 return "Invalid Timestapm";
-            if(data.Voltage_RMS_Avg < 0)
-                return string.Format("Nevalidan podatak Voltage_RMS_Avg: {0}", data.Voltage_RMS_Avg);
-            if (data.Current_RMS_Avg < 0)
-                return string.Format("Nevalidan podatak Current_RMS_Avg: {0}", data.Current_RMS_Avg); 
-            if(data.Real_Power_Avg < 0)
-                return string.Format("Nevalidan podatak Real_Power_Avg: {0}", data.Real_Power_Avg); 
-            if (data.Reactive_Power_Avg > 0)
-                return string.Format("Nevalidan podatak Reactive_Power_Avg: {0}", data.Reactive_Power_Avg);
-            if (data.Apparent_Power_Avg < 0)
-                return string.Format("Nevalidan podatak Apparent_Power_Avg: {0}", data.Apparent_Power_Avg);
-            if (data.Frequency_Avg < 0)
-                return string.Format("Nevalidan podatak Frequency_Avg: {0}", data.Frequency_Avg);
+            if(data.Voltage_RMS_Avg <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Avg: {1}", data.RowIndex, data.Voltage_RMS_Avg);
+            if (data.Voltage_RMS_Min <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Min: {1}", data.RowIndex, data.Voltage_RMS_Min);
+            if (data.Voltage_RMS_Max <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Max: {1}", data.RowIndex, data.Voltage_RMS_Max);
+
+            if (data.Current_RMS_Avg <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Avg: {1}",data.RowIndex, data.Current_RMS_Avg);
+            if (data.Current_RMS_Min <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Min: {1}", data.RowIndex, data.Current_RMS_Min);
+            if (data.Current_RMS_Max <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Max: {1}", data.RowIndex, data.Current_RMS_Max);
+
+            if (data.Real_Power_Avg <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Real_Power_Avg: {1}", data.RowIndex, data.Real_Power_Avg);
+            if (data.Real_Power_Min <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Real_Power_Min: {1}", data.RowIndex, data.Real_Power_Min);
+            if (data.Real_Power_Max <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Real_Power_Max: {1}", data.RowIndex, data.Real_Power_Max);
+
+            if (data.Reactive_Power_Avg >= 0)
+                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Avg: {1}", data.RowIndex, data.Reactive_Power_Avg);
+            if (data.Reactive_Power_Min >= 0)
+                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Min: {1}", data.RowIndex, data.Reactive_Power_Min);
+            if (data.Reactive_Power_Max >= 0)
+                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Max: {1}", data.RowIndex, data.Reactive_Power_Max);
+
+            if (data.Apparent_Power_Avg <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Avg: {1}", data.RowIndex, data.Apparent_Power_Avg);
+            if (data.Apparent_Power_Min <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Min: {1}", data.RowIndex, data.Apparent_Power_Min);
+            if (data.Apparent_Power_Max <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Max: {1}", data.RowIndex, data.Apparent_Power_Max);
+
+
+            if (data.Frequency_Avg <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Frequency_Avg: {1}", data.RowIndex, data.Frequency_Avg);
+            if (data.Frequency_Min <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Frequency_Min: {1}", data.RowIndex, data.Frequency_Min);
+            if (data.Frequency_Max <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Frequency_Max: {1}", data.RowIndex, data.Frequency_Max);
             return null;
         }
 

@@ -45,7 +45,6 @@ namespace Client
                         if(!manipulator.Validate(data))
                         {
                             logger.Log("Podaci nemaju ispravne vrednosti za vozilo " + number + " u redu " + i, LogType.WARNING);
-                            proxy.PushSample(data);
                         }
 
                         try
