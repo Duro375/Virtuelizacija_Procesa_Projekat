@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -13,6 +14,32 @@ namespace Server
     {
         public void StartSession(int vehicleId)
         {
+            string path = "Data";
+            string sessionPath = "";
+            string rejectsPath = "";
+
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            path += "/" + vehicleId;
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            path += "/" + DateTime.Now.ToString("yyyy-MM-dd");
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            sessionPath = path + "/session.csv";
+            rejectsPath = path + "/rejects.csv";
+            File.Create(sessionPath).Close();
+            File.Create(rejectsPath).Close();
 
         }
 
