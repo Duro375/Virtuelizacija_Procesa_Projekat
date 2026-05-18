@@ -10,8 +10,13 @@ using Common;
 
 namespace Server
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class ChargingService : IChargingService
     {
+        public RejectedWriter rejects;
+        public SessionWriter session;
+
+
         public void StartSession(int vehicleId)
         {
             string path = "Data";
@@ -38,26 +43,57 @@ namespace Server
             }
             sessionPath = path + "/session.csv";
             rejectsPath = path + "/rejects.csv";
+
             File.Create(sessionPath).Close();
             File.Create(rejectsPath).Close();
 
+            session = new SessionWriter(sessionPath);
+            rejects = new RejectedWriter(rejectsPath);
+
+            session.FirstRow();
+            rejects.FirstRow();
+
+            Console.WriteLine("Prenos je u toku...");
         }
 
         public void PushSample(DataContract data)
         {
-            string error = Validate(data);
-            if (error != null)
+            
             {
-                SendFaultMessage(error);
-            }
-            else
-            {
-                Console.WriteLine(data.RowIndex);
+                string error = Validate(data);
+                if (error != null)
+                {
+                    try
+                    {
+                        rejects.WriteRejection(data);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    SendFaultMessage(error);
+                }
+                else
+                {
+                    if (session == null)
+                    {
+                        SendFaultMessage("Session is not started.");
+                    }
+                    else
+                    {
+                        session.WriteRow(data);
+                    }
+                }
+
             }
 
         }
         public void EndSession()
         {
+            Console.WriteLine("Prenos je zavrsen");
+            session.Dispose();
+            rejects.Dispose();
         }
 
         //3. zadatak: Validacija i fault poruka

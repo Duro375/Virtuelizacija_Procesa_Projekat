@@ -27,11 +27,11 @@ namespace Server
             }
 
             string row = $"{data.RowIndex},{data.TimeStamp:yyyy-MM-dd HH:mm:ss.fff}," +
-                         $"{data.Voltage_RMS_Min},{data.Voltage_RMS_Avg},{data.Voltage_RMS_Max}" +
-                         $"{data.Current_RMS_Min},{data.Current_RMS_Avg},{data.Current_RMS_Max}" +
-                         $"{data.Real_Power_Min},{data.Real_Power_Avg},{data.Real_Power_Max}" +
-                         $"{data.Reactive_Power_Min},{data.Reactive_Power_Avg},{data.Reactive_Power_Max}"+
-                         $"{data.Apparent_Power_Min},{data.Apparent_Power_Avg},{data.Apparent_Power_Max}"+
+                         $"{data.Voltage_RMS_Min},{data.Voltage_RMS_Avg},{data.Voltage_RMS_Max}," +
+                         $"{data.Current_RMS_Min},{data.Current_RMS_Avg},{data.Current_RMS_Max}," +
+                         $"{data.Real_Power_Min},{data.Real_Power_Avg},{data.Real_Power_Max}," +
+                         $"{data.Reactive_Power_Min},{data.Reactive_Power_Avg},{data.Reactive_Power_Max},"+
+                         $"{data.Apparent_Power_Min},{data.Apparent_Power_Avg},{data.Apparent_Power_Max},"+
                          $"{data.Frequency_Min},{data.Frequency_Avg},{data.Frequency_Max}";
 
             _sessionWriter.WriteLine(row);
@@ -68,6 +68,19 @@ namespace Server
                     Console.WriteLine("Dispose session stream-a je neuspesan!");
                 }
             }
+        }
+
+        public void FirstRow()
+        {
+            if (_sessionWriter == null)
+            {
+                throw new ObjectDisposedException(nameof(SessionWriter), "Pokusaj upisa u stream koji je zatvoren.");
+            }
+
+            string row = "Row Index,Date Time,Voltage RMS Min (V),Voltage RMS Avg (V),Voltage RMS Max (V),Current RMS Min (A),Current RMS Avg (A),Current RMS Max (A),Real Power Min (kW),Real Power Avg (kW),Real Power Max (kW),Reactive Power Min (kVAR),Reactive Power Avg (kVAR),Reactive Power Max (kVAR),Apparent Power Min (kVA),Apparent Power Avg (kVA),Apparent Power Max (kVA),Frequency Min (Hz),Frequency Avg (Hz),Frequency Max (Hz)";
+
+            _sessionWriter.WriteLine(row);
+            _sessionWriter.Flush();
         }
     }
 }

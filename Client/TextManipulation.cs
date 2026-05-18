@@ -95,13 +95,14 @@ namespace Common
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Nevalidan podatak u redu : " + row);
                 return null;
             }
         }
 
         public bool Validate(DataContract data)
         {
-            if (data.Voltage_RMS_Min <= 0 || data.Voltage_RMS_Avg <= 0 || data.Voltage_RMS_Max <= 0 || data.Current_RMS_Min <= 0 || data.Current_RMS_Avg <= 0 || data.Current_RMS_Max <= 0 || data.Real_Power_Min <= 0 || data.Real_Power_Avg <= 0 || data.Real_Power_Max <= 0 || data.Apparent_Power_Min <= 0 || data.Apparent_Power_Avg <= 0 || data.Apparent_Power_Max <= 0 || data.Frequency_Min <= 0 || data.Frequency_Avg <= 0 || data.Frequency_Max <= 0)
+            if (data.Voltage_RMS_Min <= 0 || data.Voltage_RMS_Avg <= 0 || data.Voltage_RMS_Max <= 0 || data.Current_RMS_Min <= 0 || data.Current_RMS_Avg <= 0 || data.Current_RMS_Max <= 0 || data.Real_Power_Min <= 0 || data.Real_Power_Avg <= 0 || data.Real_Power_Max <= 0 || data.Apparent_Power_Min <= 0 || data.Apparent_Power_Avg <= 0 || data.Apparent_Power_Max <= 0 || data.Frequency_Min <= 0 || data.Frequency_Avg <= 0 || data.Frequency_Max <= 0 || data.Reactive_Power_Min >= 0 || data.Reactive_Power_Avg >= 0 || data.Reactive_Power_Max >= 0)
             {
                 return false;
             }
