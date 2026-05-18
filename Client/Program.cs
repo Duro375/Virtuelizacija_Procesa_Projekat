@@ -13,8 +13,8 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            ChannelFactory<IServiceContract> factory = new ChannelFactory<IServiceContract>("ChargerService");
-            IServiceContract proxy = factory.CreateChannel();
+            ChannelFactory<IChargingService> factory = new ChannelFactory<IChargingService>("ChargerService");
+            IChargingService proxy = factory.CreateChannel();
 
             ILogger logger = new Logger("log.txt");
 
@@ -39,7 +39,7 @@ namespace Client
                 else
                 {
                     dataString = manipulator.ReadLine();
-                    DataContract data = manipulator.ConvertToData(dataString, i, number);
+                    DataContract data = manipulator.ConvertToData(dataString, number, i);
                     if(data != null)
                     {
                         if(!manipulator.Validate(data))
