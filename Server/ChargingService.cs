@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Server
     {
         public RejectedWriter rejects;
         public SessionWriter session;
+        double ReactivePowerAvgLimit = Double.Parse(ConfigurationManager.AppSettings["ReactivePowerAvgLimit"]);
+        List<double> ApparentPowerAvg = new List<double>();
 
         private readonly Publisher publisher;
         public ChargingService(Publisher publisher)
@@ -23,7 +26,7 @@ namespace Server
         }
 
         public void StartSession(int vehicleId)
-        {
+        { 
             string path = "Data";
             string sessionPath = "";
             string rejectsPath = "";
@@ -63,6 +66,7 @@ namespace Server
 
         public void PushSample(DataContract data)
         {
+
             {
                 string error = Validate(data);
                 if (error != null)
@@ -88,7 +92,21 @@ namespace Server
                     else
                     {
                         session.WriteRow(data);
+                        AddApparentPowerToList(data.Apparent_Power.AvgValue);
                         publisher.Handle("sample", data.VehicleId, data.RowIndex, "Podatak je uspesno primljen.");
+                        if(data.Reactive_Power.AvgValue < 0 && data.Reactive_Power.AvgValue > ReactivePowerAvgLimit)
+                        {
+                            publisher.Handle("warning", data.VehicleId, data.RowIndex, string.Format("Reactive Power Warning -> Prosecna reaktivna snaga {0} je iznad praga {1}", data.Reactive_Power.AvgValue, ReactivePowerAvgLimit));
+                        }
+                        else if(data.Reactive_Power.AvgValue > 0 && (-data.Reactive_Power.AvgValue) > ReactivePowerAvgLimit)
+                        {
+                            publisher.Handle("warning", data.VehicleId, data.RowIndex, string.Format("Reactive Power Warning -> Prosecna reaktivna snaga {0} je iznad praga {1}", -data.Reactive_Power.AvgValue, ReactivePowerAvgLimit));
+                        }
+
+                        if(!CheckApparentPower())
+                        {
+                            publisher.Handle("warning", data.VehicleId, data.RowIndex, string.Format("Apparent Power Stall Warning -> Prosecna prividna snaga je ista u poslednjih 5 uzoraka: {0}", ApparentPowerAvg[0]));
+                        }
                     }
                 }
 
@@ -157,6 +175,35 @@ namespace Server
             throw new FaultException<CustomException>(
                 new CustomException(message),
                 new FaultReason(message));
+        }
+
+        private void AddApparentPowerToList(double apparentPower)
+        {
+            
+            if (ApparentPowerAvg.Count < 5)
+            {
+                ApparentPowerAvg.Add(apparentPower);
+            }
+            else
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    ApparentPowerAvg[i] = ApparentPowerAvg[i + 1];
+                }
+                ApparentPowerAvg[4] = apparentPower;
+            }
+        }
+
+        private bool CheckApparentPower()
+        {
+            if (ApparentPowerAvg.Count == 5)
+            {
+                if (ApparentPowerAvg[0] == ApparentPowerAvg[1] && ApparentPowerAvg[1] == ApparentPowerAvg[2] && ApparentPowerAvg[2] == ApparentPowerAvg[3] && ApparentPowerAvg[3] == ApparentPowerAvg[4])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
