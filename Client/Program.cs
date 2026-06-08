@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.IO;
 using Common;
+using System.Runtime.CompilerServices;
 
 namespace Client
 {
