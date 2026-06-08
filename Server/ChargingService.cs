@@ -101,48 +101,48 @@ namespace Server
         {
             if(data.TimeStamp <= DateTime.MinValue)
                 return "Invalid Timestapm";
-            if(data.Voltage_RMS_Avg <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Avg: {1}", data.RowIndex, data.Voltage_RMS_Avg);
-            if (data.Voltage_RMS_Min <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Min: {1}", data.RowIndex, data.Voltage_RMS_Min);
-            if (data.Voltage_RMS_Max <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Max: {1}", data.RowIndex, data.Voltage_RMS_Max);
+            if(data.Voltage.AvgValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Avg: {1}", data.RowIndex, data.Voltage.AvgValue);
+            if (data.Voltage.MinValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Min: {1}", data.RowIndex, data.Voltage.MinValue);
+            if (data.Voltage.MaxValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Voltage_RMS_Max: {1}", data.RowIndex, data.Voltage.MaxValue);
 
-            if (data.Current_RMS_Avg <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Avg: {1}",data.RowIndex, data.Current_RMS_Avg);
-            if (data.Current_RMS_Min <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Min: {1}", data.RowIndex, data.Current_RMS_Min);
-            if (data.Current_RMS_Max <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Max: {1}", data.RowIndex, data.Current_RMS_Max);
+            if (data.Current_RMS.AvgValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Avg: {1}",data.RowIndex, data.Current_RMS.AvgValue);
+            if (data.Current_RMS.MinValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Min: {1}", data.RowIndex, data.Current_RMS.MinValue);
+            if (data.Current_RMS.MaxValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Current_RMS_Max: {1}", data.RowIndex, data.Current_RMS.MaxValue);
 
-            if (data.Real_Power_Avg <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Real_Power_Avg: {1}", data.RowIndex, data.Real_Power_Avg);
-            if (data.Real_Power_Min <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Real_Power_Min: {1}", data.RowIndex, data.Real_Power_Min);
-            if (data.Real_Power_Max <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Real_Power_Max: {1}", data.RowIndex, data.Real_Power_Max);
+            if (data.Real_Power.AvgValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Real_Power_Avg: {1}", data.RowIndex, data.Real_Power.AvgValue);
+            if (data.Real_Power.MinValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Real_Power_Min: {1}", data.RowIndex, data.Real_Power.MinValue);
+            if (data.Real_Power.MaxValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Real_Power_Max: {1}", data.RowIndex, data.Real_Power.MaxValue);
 
-            if (data.Reactive_Power_Avg >= 0)
-                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Avg: {1}", data.RowIndex, data.Reactive_Power_Avg);
-            if (data.Reactive_Power_Min >= 0)
-                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Min: {1}", data.RowIndex, data.Reactive_Power_Min);
-            if (data.Reactive_Power_Max >= 0)
-                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Max: {1}", data.RowIndex, data.Reactive_Power_Max);
+            if (data.Reactive_Power.AvgValue >= 0)
+                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Avg: {1}", data.RowIndex, data.Reactive_Power.AvgValue);
+            if (data.Reactive_Power.MinValue >= 0)
+                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Min: {1}", data.RowIndex, data.Reactive_Power.MinValue);
+            if (data.Reactive_Power.MaxValue >= 0)
+                return string.Format("Nevalidan podatak Row:{0} Reactive_Power_Max: {1}", data.RowIndex, data.Reactive_Power.MaxValue);
 
-            if (data.Apparent_Power_Avg <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Avg: {1}", data.RowIndex, data.Apparent_Power_Avg);
-            if (data.Apparent_Power_Min <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Min: {1}", data.RowIndex, data.Apparent_Power_Min);
-            if (data.Apparent_Power_Max <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Max: {1}", data.RowIndex, data.Apparent_Power_Max);
+            if (data.Apparent_Power.AvgValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Avg: {1}", data.RowIndex, data.Apparent_Power.AvgValue);
+            if (data.Apparent_Power.MinValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Min: {1}", data.RowIndex, data.Apparent_Power.MinValue);
+            if (data.Apparent_Power.MaxValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Apparent_Power_Max: {1}", data.RowIndex, data.Apparent_Power.MaxValue);
 
 
-            if (data.Frequency_Avg <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Frequency_Avg: {1}", data.RowIndex, data.Frequency_Avg);
-            if (data.Frequency_Min <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Frequency_Min: {1}", data.RowIndex, data.Frequency_Min);
-            if (data.Frequency_Max <= 0)
-                return string.Format("Nevalidan podatak Row:{0} Frequency_Max: {1}", data.RowIndex, data.Frequency_Max);
+            if (data.Frequency.AvgValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Frequency_Avg: {1}", data.RowIndex, data.Frequency.AvgValue);
+            if (data.Frequency.MinValue  <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Frequency_Min: {1}", data.RowIndex, data.Frequency.MinValue);
+            if (data.Frequency.MaxValue <= 0)
+                return string.Format("Nevalidan podatak Row:{0} Frequency_Max: {1}", data.RowIndex, data.Frequency.MaxValue );
             return null;
         }
 

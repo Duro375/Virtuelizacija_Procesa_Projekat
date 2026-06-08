@@ -12,7 +12,9 @@ namespace Common
     {
         [DataMember]
         public double MinValue { get; set; }
+        [DataMember]
         public double AvgValue { get; set; }
+        [DataMember]
         public double MaxValue { get; set; }
         public MeasuredValue() { }
         public MeasuredValue(double minValue, double avgValue, double maxValue)

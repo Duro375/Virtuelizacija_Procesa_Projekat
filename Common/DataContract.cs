@@ -18,65 +18,39 @@ namespace Common
         [DataMember]
         public DateTime TimeStamp { get; set; }
         [DataMember]
-        public double Voltage_RMS_Min { get; set; }
+        public MeasuredValue Voltage { get; set; }
         [DataMember]
-        public double Voltage_RMS_Max { get; set; }
+        public MeasuredValue Current_RMS { get; set; }
         [DataMember]
-        public double Voltage_RMS_Avg { get; set; }
+        public MeasuredValue Real_Power { get; set; }
         [DataMember]
-        public double Current_RMS_Min { get; set; }
+        public MeasuredValue Reactive_Power { get; set; }
         [DataMember]
-        public double Current_RMS_Max { get; set; }
+        public MeasuredValue Apparent_Power { get; set; }
         [DataMember]
-        public double Current_RMS_Avg { get; set; }
-        [DataMember]
-        public double Real_Power_Min { get; set; }
-        [DataMember]
-        public double Real_Power_Avg { get; set; }
-        [DataMember]
-        public double Real_Power_Max { get; set; }
-        [DataMember]
-        public double Reactive_Power_Min { get; set; }
-        [DataMember]
-        public double Reactive_Power_Avg { get; set; }
-        [DataMember]
-        public double Reactive_Power_Max { get; set; }
-        [DataMember]
-        public double Apparent_Power_Min { get; set; }
-        [DataMember]
-        public double Apparent_Power_Avg { get; set; }
-        [DataMember]
-        public double Apparent_Power_Max { get; set; }
-        [DataMember]
-        public double Frequency_Min { get; set; }
-        [DataMember]
-        public double Frequency_Avg { get; set; }
-        [DataMember]
-        public double Frequency_Max { get; set; }
+        public MeasuredValue Frequency { get; set; }
 
-        public DataContract(int vehicleId, int rowIndex, DateTime timeStamp, double voltage_RMS_Min, double voltage_RMS_Max, double voltage_RMS_Avg, double current_RMS_Min, double current_RMS_Max, double current_RMS_Avg, double real_Power_Min, double real_Power_Avg, double real_Power_Max, double reactive_Power_Min, double reactive_Power_Avg, double reactive_Power_Max, double apparent_Power_Min, double apparent_Power_Avg, double apparent_Power_Max, double frequency_Min, double frequency_Avg, double frequency_Max)
+        public DataContract(int vehicleId, int rowIndex, DateTime timeStamp, double voltage_RMS_Min, double voltage_RMS_Avg, double voltage_RMS_Max, double current_RMS_Min, double current_RMS_Avg, double current_RMS_Max, double real_Power_Min, double real_Power_Avg, double real_Power_Max, double reactive_Power_Min, double reactive_Power_Avg, double reactive_Power_Max, double apparent_Power_Min, double apparent_Power_Avg, double apparent_Power_Max, double frequency_Min, double frequency_Avg, double frequency_Max)
         {
             VehicleId = vehicleId;
             RowIndex = rowIndex;
             TimeStamp = timeStamp;
-            Voltage_RMS_Min = voltage_RMS_Min;
-            Voltage_RMS_Max = voltage_RMS_Max;
-            Voltage_RMS_Avg = voltage_RMS_Avg;
-            Current_RMS_Min = current_RMS_Min;
-            Current_RMS_Max = current_RMS_Max;
-            Current_RMS_Avg = current_RMS_Avg;
-            Real_Power_Min = real_Power_Min;
-            Real_Power_Avg = real_Power_Avg;
-            Real_Power_Max = real_Power_Max;
-            Reactive_Power_Min = reactive_Power_Min;
-            Reactive_Power_Avg = reactive_Power_Avg;
-            Reactive_Power_Max = reactive_Power_Max;
-            Apparent_Power_Min = apparent_Power_Min;
-            Apparent_Power_Avg = apparent_Power_Avg;
-            Apparent_Power_Max = apparent_Power_Max;
-            Frequency_Min = frequency_Min;
-            Frequency_Avg = frequency_Avg;
-            Frequency_Max = frequency_Max;
+            Voltage = new MeasuredValue(voltage_RMS_Min, voltage_RMS_Avg, voltage_RMS_Max);
+            Current_RMS = new MeasuredValue(current_RMS_Min, current_RMS_Avg, current_RMS_Max);
+            Real_Power = new MeasuredValue(real_Power_Min, real_Power_Avg, real_Power_Max);
+            Reactive_Power = new MeasuredValue(reactive_Power_Min, reactive_Power_Avg, reactive_Power_Max);
+            Apparent_Power = new MeasuredValue(apparent_Power_Min, apparent_Power_Avg, apparent_Power_Max);
+            Frequency = new MeasuredValue(frequency_Min, frequency_Avg, frequency_Max);
+        }
+
+        public bool IsValid()
+        {
+            return Voltage.MinValue > 0 && Voltage.AvgValue > 0 && Voltage.MaxValue > 0 &&
+                   Current_RMS.MinValue > 0 && Current_RMS.AvgValue > 0 && Current_RMS.MaxValue > 0 &&
+                   Real_Power.MinValue > 0 && Real_Power.AvgValue > 0 && Real_Power.MaxValue > 0 &&
+                   Apparent_Power.MinValue > 0 && Apparent_Power.AvgValue > 0 && Apparent_Power.MaxValue > 0 &&
+                   Frequency.MinValue > 0 && Frequency.AvgValue > 0 && Frequency.MaxValue > 0 &&
+                   Reactive_Power.MinValue < 0 && Reactive_Power.AvgValue < 0 && Reactive_Power.MaxValue < 0;
         }
     }
 }
