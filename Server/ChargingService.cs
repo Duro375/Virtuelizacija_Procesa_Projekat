@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
@@ -15,6 +17,10 @@ namespace Server
     {
         public RejectedWriter rejects;
         public SessionWriter session;
+        public double previousAvgRMS = 0;
+        public double CurrentMean = 0;
+        public bool firstRow = true;
+        public int count = 0;
 
 
         public void StartSession(int vehicleId)
@@ -66,6 +72,7 @@ namespace Server
                     try
                     {
                         rejects.WriteRejection(data);
+                        Analytics1(data);
                     }
                     catch (Exception)
                     {
@@ -83,6 +90,7 @@ namespace Server
                     else
                     {
                         session.WriteRow(data);
+                        Analytics1(data);
                     }
                 }
 
@@ -94,6 +102,36 @@ namespace Server
             Console.WriteLine("Prenos je zavrsen");
             session.Dispose();
             rejects.Dispose();
+        }
+
+        //9. zadatak: Analitika 1, struja i trend punjenja 
+        private void Analytics1(DataContract data)
+        {
+            if(!firstRow)
+            {
+                double I = data.Current_RMS.AvgValue - previousAvgRMS;
+                double CurrentSpikeThreshold = double.Parse(ConfigurationManager.AppSettings["CurrentSpikeThreshold"]);
+                if (Math.Abs(I) > CurrentSpikeThreshold)
+                {
+
+                }
+
+                if(data.Current_RMS.AvgValue < 0.80 * CurrentMean || data.Current_RMS.AvgValue > 1.20 * CurrentMean)
+                {
+
+                }
+
+            }
+            else
+            {
+                firstRow = false;
+                CurrentMean = data.Current_RMS.AvgValue;
+                count++;
+            }
+            
+            previousAvgRMS = data.Current_RMS.AvgValue;
+            CurrentMean = (CurrentMean * count + data.Current_RMS.AvgValue) / (count+1);
+            count++;
         }
 
         //3. zadatak: Validacija i fault poruka

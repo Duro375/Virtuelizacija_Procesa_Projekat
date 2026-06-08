@@ -93,7 +93,7 @@ namespace Common
                 DataContract data = new DataContract(id, row, timestamp, vMin, vAvg, vMax, aMin, aAvg, aMax, kWMin, kWAvg, kWMax, kVARMin, kVARAvg, kVARMax, kVAmin, kVAavg, kVAmax, fMin, fAvg, fMax);
                 return data;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Nevalidan podatak u redu : " + row);
                 return null;
