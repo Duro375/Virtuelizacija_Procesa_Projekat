@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,11 @@ namespace Server
         public bool firstRow = true;
         public int count = 0;
 
+        private readonly Publisher publisher;
+        public ChargingService(Publisher publisher)
+        {
+            this.publisher = publisher;
+        }
 
         public void StartSession(int vehicleId)
         {
@@ -56,15 +62,14 @@ namespace Server
             session = new SessionWriter(sessionPath);
             rejects = new RejectedWriter(rejectsPath);
 
+            publisher.Handle("start", vehicleId, 0, "Prenos je zapoceo...");
+
             session.FirstRow();
             rejects.FirstRow();
-
-            Console.WriteLine("Prenos je u toku...");
         }
 
         public void PushSample(DataContract data)
         {
-            
             {
                 string error = Validate(data);
                 if (error != null)
@@ -72,7 +77,7 @@ namespace Server
                     try
                     {
                         rejects.WriteRejection(data);
-                        Analytics1(data);
+                        publisher.Handle("sample", data.VehicleId, data.RowIndex, error);
                     }
                     catch (Exception)
                     {
@@ -90,6 +95,7 @@ namespace Server
                     else
                     {
                         session.WriteRow(data);
+                        publisher.Handle("sample", data.VehicleId, data.RowIndex, "Podatak je uspesno primljen.");
                         Analytics1(data);
                     }
                 }
@@ -97,11 +103,11 @@ namespace Server
             }
 
         }
-        public void EndSession()
+        public void EndSession(int vehicleId)
         {
-            Console.WriteLine("Prenos je zavrsen");
             session.Dispose();
             rejects.Dispose();
+            publisher.Handle("end", vehicleId, 0, "Prenos je zavrsen");
         }
 
         //9. zadatak: Analitika 1, struja i trend punjenja 
@@ -113,20 +119,27 @@ namespace Server
                 double CurrentSpikeThreshold = double.Parse(ConfigurationManager.AppSettings["CurrentSpikeThreshold"]);
                 if (Math.Abs(I) > CurrentSpikeThreshold)
                 {
-
+                    string message = string.Empty;
+                    if(I > 0)
+                    {
+                        message = $"Struja je skocila za {Math.Round(Math.Abs(I), 3)}A! Vrednost pre: {previousAvgRMS}A, vrednost posle: {data.Current_RMS.AvgValue}A";
+                    }
+                    else
+                    {
+                        message = $"Struja je pala za {Math.Abs(I)}A! Vrednost pre: {previousAvgRMS}A, vrednost posle: {data.Current_RMS.AvgValue}A";
+                    }
+                    publisher.Handle("warning", data.VehicleId, data.RowIndex, "CurrentSpike: " + message);
                 }
 
                 if(data.Current_RMS.AvgValue < 0.80 * CurrentMean || data.Current_RMS.AvgValue > 1.20 * CurrentMean)
                 {
-
+                    string message = $"Struja je izvan opsega! Srednja vrednost: {CurrentMean}A, vrednost struje: {data.Current_RMS.AvgValue}A";
+                    publisher.Handle("warning", data.VehicleId, data.RowIndex, "CurrentOutOfBandWarning: " + message);
                 }
-
             }
             else
             {
                 firstRow = false;
-                CurrentMean = data.Current_RMS.AvgValue;
-                count++;
             }
             
             previousAvgRMS = data.Current_RMS.AvgValue;

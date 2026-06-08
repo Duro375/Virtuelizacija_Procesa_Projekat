@@ -135,7 +135,17 @@ namespace Server
 
         static void RunWCFService()
         {
-            using (ServiceHost host = new ServiceHost(typeof(ChargingService)))
+            Publisher publisher = new Publisher();
+            Subscriber subscriber = new Subscriber();
+
+            publisher.OnTransferStarted += subscriber.HandleTransferMessage;
+            publisher.OnSampleRecieved += subscriber.HandleSampleMessage;
+            publisher.OnTransferCompleted += subscriber.HandleTransferMessage; 
+            publisher.OnWarningRaised += subscriber.HandleWarningMessage;
+
+            ChargingService service = new ChargingService(publisher);
+
+            using (ServiceHost host = new ServiceHost(service))
             {
                 host.Open();
                 Console.WriteLine("Servis je otvoren, pritisnite bilo koje dugme da ga zatvorite");
