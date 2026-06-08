@@ -27,12 +27,12 @@ namespace Server
             }
 
             string row = $"{data.RowIndex},{data.TimeStamp:yyyy-MM-dd HH:mm:ss.fff}," +
-                         $"{data.Voltage_RMS_Min},{data.Voltage_RMS_Avg},{data.Voltage_RMS_Max}," +
-                         $"{data.Current_RMS_Min},{data.Current_RMS_Avg},{data.Current_RMS_Max}," +
-                         $"{data.Real_Power_Min},{data.Real_Power_Avg},{data.Real_Power_Max}," +
-                         $"{data.Reactive_Power_Min},{data.Reactive_Power_Avg},{data.Reactive_Power_Max},"+
-                         $"{data.Apparent_Power_Min},{data.Apparent_Power_Avg},{data.Apparent_Power_Max},"+
-                         $"{data.Frequency_Min},{data.Frequency_Avg},{data.Frequency_Max}";
+                         $"{data.Voltage.MinValue},{data.Voltage.AvgValue},{data.Voltage.MaxValue}," +
+                         $"{data.Current_RMS.MinValue},{data.Current_RMS.AvgValue},{data.Current_RMS.MaxValue}," +
+                         $"{data.Real_Power.MinValue},{data.Real_Power.AvgValue},{data.Real_Power.MaxValue}," +
+                         $"{data.Reactive_Power.MinValue},{data.Reactive_Power.AvgValue},{data.Reactive_Power.MaxValue},"+
+                         $"{data.Apparent_Power.MinValue},{data.Apparent_Power.AvgValue},{data.Apparent_Power.MaxValue},"+
+                         $"{data.Frequency.MinValue},{data.Frequency.AvgValue},{data.Frequency.MaxValue}";
 
             _sessionWriter.WriteLine(row);
             _sessionWriter.Flush();
