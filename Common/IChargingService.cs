@@ -18,6 +18,6 @@ namespace Common
         void PushSample(DataContract data);
 
         [OperationContract]
-        void EndSession();
+        void EndSession(int vehicleId);
     }
 }

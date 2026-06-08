@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using System.IO;
@@ -28,6 +29,8 @@ namespace Client
             manipulator.Initialize();
 
             proxy.StartSession(number);
+
+            Console.WriteLine("Prenos podataka je zapocet");
 
             int brojRedova = manipulator.GetNumberOfLines();
             string dataString = "";
@@ -62,10 +65,11 @@ namespace Client
                         logger.Log("Podaci su u neispravnom formatu za vozilo " + number + " u redu " + i, LogType.ERROR);
                     }
                 }
+                Thread.Sleep(200);
             }
             manipulator.Dispose();
 
-            proxy.EndSession();
+            proxy.EndSession(number);
 
             if (proxy != null)
             {
