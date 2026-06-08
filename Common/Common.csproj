@@ -49,6 +49,7 @@
     <Compile Include="IChargingService.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LogTypes.cs" />
+    <Compile Include="MeasuredValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
