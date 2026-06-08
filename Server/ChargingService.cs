@@ -16,6 +16,11 @@ namespace Server
         public RejectedWriter rejects;
         public SessionWriter session;
 
+        private readonly Publisher publisher;
+        public ChargingService(Publisher publisher)
+        {
+            this.publisher = publisher;
+        }
 
         public void StartSession(int vehicleId)
         {
@@ -50,15 +55,14 @@ namespace Server
             session = new SessionWriter(sessionPath);
             rejects = new RejectedWriter(rejectsPath);
 
+            publisher.Handle("start", vehicleId, 0, "Prenos je zapoceo...");
+
             session.FirstRow();
             rejects.FirstRow();
-
-            Console.WriteLine("Prenos je u toku...");
         }
 
         public void PushSample(DataContract data)
         {
-            
             {
                 string error = Validate(data);
                 if (error != null)
@@ -66,6 +70,7 @@ namespace Server
                     try
                     {
                         rejects.WriteRejection(data);
+                        publisher.Handle("sample", data.VehicleId, data.RowIndex, error);
                     }
                     catch (Exception)
                     {
@@ -83,17 +88,18 @@ namespace Server
                     else
                     {
                         session.WriteRow(data);
+                        publisher.Handle("sample", data.VehicleId, data.RowIndex, "Podatak je uspesno primljen.");
                     }
                 }
 
             }
 
         }
-        public void EndSession()
+        public void EndSession(int vehicleId)
         {
-            Console.WriteLine("Prenos je zavrsen");
             session.Dispose();
             rejects.Dispose();
+            publisher.Handle("end", vehicleId, 0, "Prenos je zavrsen");
         }
 
         //3. zadatak: Validacija i fault poruka

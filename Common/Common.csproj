@@ -43,14 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomEventArgs.cs" />
     <Compile Include="CustomException.cs" />
     <Compile Include="DataContract.cs" />
-    <Compile Include="ILogger.cs" />
     <Compile Include="IChargingService.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="LogTypes.cs" />
     <Compile Include="MeasuredValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Publisher.cs" />
+    <Compile Include="Subscriber.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
